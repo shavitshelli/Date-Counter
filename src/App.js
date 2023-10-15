@@ -5,13 +5,6 @@ export default function App() {
   const [step, setStep] = useState(1);
   const [count, setCount] = useState(0);
 
-  function handlePrevStep() {
-    setStep((currStep) => currStep - 1);
-  }
-
-  function handleNextStep() {
-    setStep((currStep) => currStep + 1);
-  }
   function handlePrevCount() {
     setCount((currCount) => currCount - step);
   }
@@ -31,24 +24,29 @@ export default function App() {
   return (
     <div style={{ textAlign: "center" }}>
       <div>
-        <button style={{ fontSize: "40px" }} onClick={handlePrevStep}>
-          -
-        </button>
-        <span style={{ fontSize: "32px" }}>Step: {step}</span>
-        <button style={{ fontSize: "32px" }} onClick={handleNextStep}>
-          +
-        </button>
+        <input
+          type="range"
+          min="0"
+          max="10"
+          value={step}
+          onChange={(e) => setStep(Number(e.target.value))}
+        />
+        <span style={{ fontSize: "32px" }}>{step}</span>
       </div>
-      <div style={{ textAlign: "center" }}>
+      <div>
         <button style={{ fontSize: "32px" }} onClick={handlePrevCount}>
           -
         </button>
-        <span style={{ fontSize: "32px" }}>Count: {count}</span>
+        <input
+          type="text"
+          style={{ fontSize: "32px" }}
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        ></input>
         <button style={{ fontSize: "32px" }} onClick={handleNextCount}>
           +
         </button>
       </div>
-
       <span style={{ fontSize: "32px" }}>
         {count > 0
           ? `${count} days from today is: `
@@ -57,6 +55,26 @@ export default function App() {
           : `Today is : `}
       </span>
       <span style={{ fontSize: "32px" }}>{clacFutureDate(count)}</span>
+
+      <div>
+        <Reset count={count} setCount={setCount} setStep={setStep} />
+      </div>
     </div>
+  );
+}
+
+function Reset({ count, setCount, setStep }) {
+  console.log(count);
+  if (count === 0) return;
+  return (
+    <button
+      style={{ fontSize: "32px" }}
+      onClick={() => {
+        setCount(0);
+        setStep(1);
+      }}
+    >
+      Reset
+    </button>
   );
 }
